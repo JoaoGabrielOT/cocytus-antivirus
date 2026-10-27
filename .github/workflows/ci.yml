@@ -1,0 +1,30 @@
+# Compila, confere a formatação e roda os testes a cada push e pull request.
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  verify:
+    runs-on: windows-latest
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: SDK, ClamAV, build e testes
+        shell: pwsh
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          ./scripts/cocytus.ps1 -Task sdk
+          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+          ./scripts/cocytus.ps1 -Task engines
+          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+          ./scripts/cocytus.ps1 -Task verify
+
+      - name: Log em caso de falha
+        if: failure()
+        shell: pwsh
+        run: Get-ChildItem .dev/logs/*.log | ForEach-Object { "===== $($_.Name)"; Get-Content $_ -Tail 200 }
