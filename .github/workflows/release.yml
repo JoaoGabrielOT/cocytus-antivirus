@@ -1,15 +1,23 @@
-# Gera uma release quando uma tag vX.Y.Z é enviada:
-# compila, roda os testes, publica o build autocontido (com o ClamAV oficial) e anexa
-# Cocytus-X.Y.Z-win-x64.zip e o .sha256 à release. O Cocytus instalado procura essas releases para se atualizar.
+# Publica uma release quando a versão em Directory.Build.props muda na main (ou manualmente em Actions → Release).
+# Se a release vX.Y.Z ainda não existe: compila, roda os testes, publica o build autocontido (com o ClamAV oficial),
+# cria a tag vX.Y.Z e a release com Cocytus-X.Y.Z-win-x64.zip e o .sha256. O Cocytus instalado procura essas releases
+# para se atualizar.
 name: Release
 
 on:
   push:
-    tags:
-      - 'v*.*.*'
+    branches: [main]
+    paths:
+      - Directory.Build.props
+      - .github/workflows/release.yml
+  workflow_dispatch:
 
 permissions:
   contents: write
+
+concurrency:
+  group: release
+  cancel-in-progress: false
 
 jobs:
   release:
@@ -18,15 +26,24 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - name: Versão a partir da tag
+      - name: Versão
         id: version
         shell: pwsh
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          $v = '${{ github.ref_name }}'.TrimStart('v')
-          if ($v -notmatch '^\d+\.\d+\.\d+$') { throw "Tag inválida: ${{ github.ref_name }} (use vX.Y.Z)" }
+          [xml]$props = Get-Content Directory.Build.props -Raw
+          $v = ($props.Project.PropertyGroup | ForEach-Object { $_.Version } | Where-Object { $_ } | Select-Object -First 1)
+          if ($v -notmatch '^\d+\.\d+\.\d+$') { throw "Versão inválida em Directory.Build.props: $v" }
+          gh release view "v$v" --repo '${{ github.repository }}' *> $null
+          $exists = $LASTEXITCODE -eq 0
+          if ($exists) { Write-Host "A release v$v já existe; nada a fazer." }
           "value=$v" >> $env:GITHUB_OUTPUT
+          "exists=$($exists.ToString().ToLowerInvariant())" >> $env:GITHUB_OUTPUT
+          exit 0
 
       - name: Build, testes e pacote
+        if: steps.version.outputs.exists == 'false'
         shell: pwsh
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -38,11 +55,12 @@ jobs:
         run: Get-ChildItem .dev/logs/*.log | ForEach-Object { "===== $($_.Name)"; Get-Content $_ -Tail 200 }
 
       - name: Publicar release
+        if: steps.version.outputs.exists == 'false'
         shell: pwsh
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           $v = '${{ steps.version.outputs.value }}'
           $zip = "dist/release/Cocytus-$v-win-x64.zip"
-          gh release create '${{ github.ref_name }}' $zip "$zip.sha256" `
-            --title "Cocytus $v" --generate-notes --verify-tag
+          gh release create "v$v" $zip "$zip.sha256" --repo '${{ github.repository }}' `
+            --target '${{ github.sha }}' --title "Cocytus $v" --generate-notes

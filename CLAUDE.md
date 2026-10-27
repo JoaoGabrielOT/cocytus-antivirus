@@ -47,6 +47,7 @@ O script usa só o SDK em `.tools\dotnet` e caches em `.cache\` (nada global).
   Lixeira, desinstalar nem verificações rápida/completa no computador do usuário durante o desenvolvimento.
 - Rede: download do SDK/ClamAV/NuGet (scripts), das bases do ClamAV (freshclam) e consulta/download das releases do
   próprio Cocytus no GitHub (`JoaoGabrielOT/cocytus-antivirus`). Nenhuma telemetria.
-- Releases: tag `vX.Y.Z` → workflow `release.yml` (`scripts\cocytus.ps1 -Task release -Version X.Y.Z`). O pacote precisa
+- Releases: mudar `<Version>` no `Directory.Build.props` e dar push na `main` → workflow `release.yml` cria a tag
+  `vX.Y.Z` e a release (`scripts\cocytus.ps1 -Task release -Version X.Y.Z`). O pacote precisa
   se chamar `Cocytus-X.Y.Z-win-x64.zip` e ter o `.sha256` ao lado; é isso que o atualizador procura.
 - Não apagar arquivos do usuário nem fazer commit/push sem autorização.

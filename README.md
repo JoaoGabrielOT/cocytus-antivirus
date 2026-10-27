@@ -74,11 +74,12 @@ Licença: **GPL-2.0** (veja `LICENSE` e `THIRD-PARTY-NOTICES.md`). Nada depende 
 
 ## Publicar uma versão nova
 
-1. Atualize `<Version>` em `Directory.Build.props` (ex.: `0.3.0`) e faça commit.
-2. Crie e envie a tag: `git tag v0.3.0` e `git push origin v0.3.0`.
-3. O workflow `.github/workflows/release.yml` (Windows) baixa o SDK e o ClamAV oficial, compila, roda os testes, gera
-   `Cocytus-0.3.0-win-x64.zip` + `.sha256` (`scripts\cocytus.ps1 -Task release -Version 0.3.0`) e cria a release
-   com notas geradas dos commits. Os Cocytus instalados passam a oferecer a atualização.
+1. Atualize `<Version>` em `Directory.Build.props` (ex.: `0.3.0`), faça commit e push na `main`.
+2. O workflow `.github/workflows/release.yml` (Windows) vê que a release `v0.3.0` ainda não existe, baixa o SDK e o ClamAV
+   oficial, compila, roda os testes, gera `Cocytus-0.3.0-win-x64.zip` + `.sha256`
+   (`scripts\cocytus.ps1 -Task release -Version 0.3.0`), cria a tag `v0.3.0` e a release com notas geradas dos commits.
+   Também dá para rodar manualmente em **Actions → Release → Run workflow**.
+3. Os Cocytus instalados passam a oferecer a atualização.
 
 Cada push na `main` roda o workflow `CI` (build, formatação e testes).
 

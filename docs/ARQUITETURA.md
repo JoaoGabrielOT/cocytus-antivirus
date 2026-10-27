@@ -62,7 +62,8 @@
   O processo novo (`UpdateApplier`) espera o antigo terminar, chama `UpdateInstaller.Apply` (cópia com backup e restauração
   em caso de erro) e abre o Cocytus da pasta do programa com `--atualizado` (pelo Explorador, se estiver elevado, para não
   herdar o administrador).
-- Releases: tag `vX.Y.Z` → `.github/workflows/release.yml` em `windows-latest` → `cocytus.ps1 -Task release`.
+- Releases: versão nova no `Directory.Build.props` na `main` → `.github/workflows/release.yml` em `windows-latest` →
+  `cocytus.ps1 -Task release` → tag `vX.Y.Z` e release com o zip e o `.sha256`.
 
 ## Tempo real
 
