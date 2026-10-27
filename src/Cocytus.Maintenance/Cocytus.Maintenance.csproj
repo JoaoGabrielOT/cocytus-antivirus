@@ -1,0 +1,18 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <RootNamespace>Cocytus.Maintenance</RootNamespace>
+    <AssemblyName>Cocytus.Maintenance</AssemblyName>
+    <!-- Exigido pelo gerador de LibraryImport (kernel32/shell32) -->
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <InternalsVisibleTo Include="Cocytus.Tests" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Cocytus.Core\Cocytus.Core.csproj" />
+  </ItemGroup>
+
+</Project>

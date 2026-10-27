@@ -1,0 +1,31 @@
+root = true
+
+[*]
+charset = utf-8
+indent_style = space
+indent_size = 4
+insert_final_newline = true
+trim_trailing_whitespace = true
+
+[*.{csproj,props,targets,slnx,xml,xaml,json,config}]
+indent_size = 2
+
+[*.{cmd,bat}]
+end_of_line = crlf
+
+[*.cs]
+dotnet_sort_system_directives_first = true
+csharp_style_namespace_declarations = file_scoped:warning
+csharp_using_directive_placement = outside_namespace:warning
+dotnet_style_qualification_for_field = false:suggestion
+csharp_style_var_for_built_in_types = true:suggestion
+csharp_style_var_when_type_is_apparent = true:suggestion
+csharp_style_var_elsewhere = true:suggestion
+csharp_new_line_before_open_brace = all
+csharp_prefer_braces = true:suggestion
+# Parâmetros de CancellationToken/IProgress: estilo do projeto
+dotnet_diagnostic.CA1068.severity = warning
+# Mensagens de exceção em pt-BR não são localizadas por recurso
+dotnet_diagnostic.CA1303.severity = none
+# ConfigureAwait: código de app WPF e bibliotecas internas
+dotnet_diagnostic.CA2007.severity = none

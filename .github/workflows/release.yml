@@ -1,0 +1,48 @@
+# Gera uma release quando uma tag vX.Y.Z é enviada:
+# compila, roda os testes, publica o build autocontido (com o ClamAV oficial) e anexa
+# Cocytus-X.Y.Z-win-x64.zip e o .sha256 à release. O Cocytus instalado procura essas releases para se atualizar.
+name: Release
+
+on:
+  push:
+    tags:
+      - 'v*.*.*'
+
+permissions:
+  contents: write
+
+jobs:
+  release:
+    runs-on: windows-latest
+    timeout-minutes: 60
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Versão a partir da tag
+        id: version
+        shell: pwsh
+        run: |
+          $v = '${{ github.ref_name }}'.TrimStart('v')
+          if ($v -notmatch '^\d+\.\d+\.\d+$') { throw "Tag inválida: ${{ github.ref_name }} (use vX.Y.Z)" }
+          "value=$v" >> $env:GITHUB_OUTPUT
+
+      - name: Build, testes e pacote
+        shell: pwsh
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: ./scripts/cocytus.ps1 -Task release -Version ${{ steps.version.outputs.value }}
+
+      - name: Log em caso de falha
+        if: failure()
+        shell: pwsh
+        run: Get-ChildItem .dev/logs/*.log | ForEach-Object { "===== $($_.Name)"; Get-Content $_ -Tail 200 }
+
+      - name: Publicar release
+        shell: pwsh
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          $v = '${{ steps.version.outputs.value }}'
+          $zip = "dist/release/Cocytus-$v-win-x64.zip"
+          gh release create '${{ github.ref_name }}' $zip "$zip.sha256" `
+            --title "Cocytus $v" --generate-notes --verify-tag

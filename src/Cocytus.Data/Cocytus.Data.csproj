@@ -1,0 +1,22 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <RootNamespace>Cocytus.Data</RootNamespace>
+    <AssemblyName>Cocytus.Data</AssemblyName>
+    <!-- Exigido pelo gerador de LibraryImport (interop com kernel32) -->
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <InternalsVisibleTo Include="Cocytus.Tests" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.Data.Sqlite" Version="10.0.13" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Cocytus.Core\Cocytus.Core.csproj" />
+  </ItemGroup>
+
+</Project>

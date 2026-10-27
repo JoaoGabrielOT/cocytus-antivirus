@@ -1,0 +1,124 @@
+<UserControl x:Class="Cocytus.App.Views.RealTimeView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+  <UserControl.Resources>
+    <Style x:Key="OutcomeText" TargetType="TextBlock">
+      <Setter Property="FontWeight" Value="SemiBold" />
+      <Setter Property="Foreground" Value="{StaticResource CySuspicious}" />
+      <Style.Triggers>
+        <DataTrigger Binding="{Binding Outcome}" Value="Threat">
+          <Setter Property="Foreground" Value="{StaticResource CyThreat}" />
+        </DataTrigger>
+      </Style.Triggers>
+    </Style>
+  </UserControl.Resources>
+  <Grid>
+    <Grid.RowDefinitions>
+      <RowDefinition Height="Auto" />
+      <RowDefinition Height="Auto" />
+      <RowDefinition Height="*" />
+    </Grid.RowDefinitions>
+
+    <StackPanel Grid.Row="0">
+      <TextBlock Text="Verificação em tempo real" Style="{StaticResource CyPageTitle}" />
+      <TextBlock Style="{StaticResource CyPageSubtitle}"
+                 Text="Verifica arquivos novos, alterados ou renomeados nas pastas abaixo logo depois de serem gravados. Não bloqueia a abertura nem a execução de programas (isso exigiria um driver de kernel assinado pela Microsoft). Ao detectar algo, o Cocytus avisa e pede sua confirmação antes de mover para a quarentena." />
+    </StackPanel>
+
+    <Grid Grid.Row="1">
+      <Grid.ColumnDefinitions>
+        <ColumnDefinition Width="*" />
+        <ColumnDefinition Width="12" />
+        <ColumnDefinition Width="*" />
+      </Grid.ColumnDefinitions>
+
+      <Border Grid.Column="0" Style="{StaticResource CyCard}">
+        <StackPanel>
+          <DockPanel>
+            <Button DockPanel.Dock="Right" Content="{Binding ToggleText}" Command="{Binding ToggleCommand}" Style="{StaticResource CyButton}" Margin="0" />
+            <TextBlock Text="{Binding StateText, StringFormat='Situação: {0}'}" Style="{StaticResource CySectionTitle}" VerticalAlignment="Center" Margin="0" />
+          </DockPanel>
+          <TextBlock Text="{Binding MessageText}" Style="{StaticResource CyMutedText}" Margin="0,6,0,0" />
+          <UniformGrid Columns="4" Margin="0,12,0,0">
+            <StackPanel>
+              <TextBlock Text="{Binding Scanned}" Style="{StaticResource CyCounterNumber}" />
+              <TextBlock Text="analisados" Style="{StaticResource CyCounterLabel}" />
+            </StackPanel>
+            <StackPanel>
+              <TextBlock Text="{Binding DetectionsCount}" Style="{StaticResource CyCounterNumber}" Foreground="{StaticResource CyThreat}" />
+              <TextBlock Text="detecções" Style="{StaticResource CyCounterLabel}" />
+            </StackPanel>
+            <StackPanel>
+              <TextBlock Text="{Binding NotScanned}" Style="{StaticResource CyCounterNumber}" Foreground="{StaticResource CyNotScanned}" />
+              <TextBlock Text="não analisados" Style="{StaticResource CyCounterLabel}" />
+            </StackPanel>
+            <StackPanel>
+              <TextBlock Text="{Binding ReadErrors}" Style="{StaticResource CyCounterNumber}" Foreground="{StaticResource CyReadError}" />
+              <TextBlock Text="erros de leitura" Style="{StaticResource CyCounterLabel}" />
+            </StackPanel>
+          </UniformGrid>
+          <TextBlock Style="{StaticResource CyMutedText}" Margin="0,10,0,0">
+            <Run Text="Na fila:" /> <Run Text="{Binding Pending, Mode=OneWay}" />
+            <Run Text=" · Estouros do buffer do Windows:" /> <Run Text="{Binding Overflows, Mode=OneWay}" />
+            <Run Text=" · Ignorados por fila cheia:" /> <Run Text="{Binding QueueFull, Mode=OneWay}" />
+          </TextBlock>
+          <TextBlock Text="{Binding LastPath, StringFormat='Último: {0}'}" Style="{StaticResource CyMutedText}" TextTrimming="CharacterEllipsis" TextWrapping="NoWrap" Margin="0,4,0,0" />
+          <TextBlock Text="{Binding Status}" Foreground="{StaticResource CyAccent}" TextWrapping="Wrap" Margin="0,8,0,0" />
+        </StackPanel>
+      </Border>
+
+      <Border Grid.Column="2" Style="{StaticResource CyCard}">
+        <DockPanel>
+          <TextBlock DockPanel.Dock="Top" Text="Pastas monitoradas" Style="{StaticResource CySectionTitle}" />
+          <TextBlock DockPanel.Dock="Top" Text="{Binding FoldersHint}" Style="{StaticResource CyMutedText}" Margin="0,0,0,8" />
+          <StackPanel DockPanel.Dock="Bottom" Orientation="Horizontal" Margin="0,8,0,0">
+            <Button Content="Adicionar pasta…" Command="{Binding AddFolderCommand}" Style="{StaticResource CyButton}" />
+            <Button Content="Remover" Command="{Binding RemoveFolderCommand}" Style="{StaticResource CyButton}" />
+            <Button Content="Restaurar padrão" Command="{Binding DefaultFoldersCommand}" Style="{StaticResource CyButton}" Margin="0" />
+          </StackPanel>
+          <ListBox ItemsSource="{Binding Folders}" SelectedItem="{Binding SelectedFolder}" Height="104"
+                   Background="{StaticResource CySurfaceAlt}" BorderBrush="{StaticResource CyBorder}" BorderThickness="1"
+                   AutomationProperties.Name="Pastas monitoradas" />
+        </DockPanel>
+      </Border>
+    </Grid>
+
+    <Border Grid.Row="2" Style="{StaticResource CyCard}" Margin="0">
+      <DockPanel>
+        <DockPanel DockPanel.Dock="Top" Margin="0,0,0,8">
+          <StackPanel DockPanel.Dock="Right" Orientation="Horizontal">
+            <Button Content="Mostrar no Explorador" Command="{Binding RevealCommand}" Style="{StaticResource CyButton}" />
+            <Button Content="Descartar aviso" Command="{Binding DismissCommand}" Style="{StaticResource CyButton}" />
+            <Button Content="Mover para a quarentena…" Command="{Binding QuarantineCommand}" Style="{StaticResource CyDangerButton}" Margin="0" />
+          </StackPanel>
+          <TextBlock Text="Detecções desta sessão" Style="{StaticResource CySectionTitle}" VerticalAlignment="Center" Margin="0" />
+        </DockPanel>
+        <DataGrid ItemsSource="{Binding Detections}" SelectedItem="{Binding SelectedDetection}" Style="{StaticResource CyGrid}" SelectionMode="Single"
+                  AutomationProperties.Name="Detecções em tempo real">
+          <DataGrid.Columns>
+            <DataGridTextColumn Header="Quando" Binding="{Binding DateText}" Width="150" />
+            <DataGridTemplateColumn Header="Categoria" Width="150">
+              <DataGridTemplateColumn.CellTemplate>
+                <DataTemplate>
+                  <TextBlock Text="{Binding OutcomeText}" Style="{StaticResource OutcomeText}" VerticalAlignment="Center" Margin="4,0" />
+                </DataTemplate>
+              </DataGridTemplateColumn.CellTemplate>
+            </DataGridTemplateColumn>
+            <DataGridTemplateColumn Header="Arquivo" Width="2*">
+              <DataGridTemplateColumn.CellTemplate>
+                <DataTemplate>
+                  <StackPanel Margin="4,2" ToolTip="{Binding Result.Path}">
+                    <TextBlock Text="{Binding FileName}" TextTrimming="CharacterEllipsis" />
+                    <TextBlock Text="{Binding Folder}" FontSize="11.5" Foreground="{StaticResource CyMuted}" TextTrimming="CharacterEllipsis" />
+                  </StackPanel>
+                </DataTemplate>
+              </DataGridTemplateColumn.CellTemplate>
+            </DataGridTemplateColumn>
+            <DataGridTextColumn Header="Detecção" Binding="{Binding Name}" Width="1.4*" />
+            <DataGridTextColumn Header="Situação" Binding="{Binding State}" Width="190" />
+          </DataGrid.Columns>
+        </DataGrid>
+      </DockPanel>
+    </Border>
+  </Grid>
+</UserControl>

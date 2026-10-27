@@ -1,0 +1,13 @@
+<Solution>
+  <Folder Name="/src/">
+    <Project Path="src/Cocytus.Core/Cocytus.Core.csproj" />
+    <Project Path="src/Cocytus.Engines/Cocytus.Engines.csproj" />
+    <Project Path="src/Cocytus.Data/Cocytus.Data.csproj" />
+    <Project Path="src/Cocytus.Update/Cocytus.Update.csproj" />
+    <Project Path="src/Cocytus.Maintenance/Cocytus.Maintenance.csproj" />
+    <Project Path="src/Cocytus.App/Cocytus.App.csproj" />
+  </Folder>
+  <Folder Name="/tests/">
+    <Project Path="tests/Cocytus.Tests/Cocytus.Tests.csproj" />
+  </Folder>
+</Solution>

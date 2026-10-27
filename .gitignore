@@ -1,0 +1,10 @@
+bin/
+obj/
+dist/
+.vs/
+*.user
+.tools/
+.cache/
+.dev/
+engines/clamav/
+TestResults/

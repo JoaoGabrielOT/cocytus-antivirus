@@ -1,0 +1,145 @@
+<UserControl x:Class="Cocytus.App.Views.SettingsView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+  <UserControl.Resources>
+    <Style x:Key="Label" TargetType="TextBlock">
+      <Setter Property="VerticalAlignment" Value="Center" />
+      <Setter Property="Margin" Value="0,6,16,6" />
+      <Setter Property="TextWrapping" Value="Wrap" />
+    </Style>
+    <Style x:Key="Hint" TargetType="TextBlock" BasedOn="{StaticResource CyMutedText}">
+      <Setter Property="VerticalAlignment" Value="Center" />
+      <Setter Property="Margin" Value="12,6,0,6" />
+    </Style>
+    <Style x:Key="Number" TargetType="TextBox" BasedOn="{StaticResource {x:Type TextBox}}">
+      <Setter Property="Width" Value="120" />
+      <Setter Property="Margin" Value="0,4" />
+      <Setter Property="HorizontalAlignment" Value="Left" />
+    </Style>
+  </UserControl.Resources>
+  <ScrollViewer VerticalScrollBarVisibility="Auto">
+    <StackPanel>
+      <TextBlock Text="Configurações" Style="{StaticResource CyPageTitle}" />
+      <TextBlock Style="{StaticResource CyPageSubtitle}" Text="Limites de varredura e do motor. Valores fora da faixa permitida são ajustados ao salvar." />
+
+      <Border Style="{StaticResource CyCard}">
+        <Grid>
+          <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="280" />
+            <ColumnDefinition Width="Auto" />
+            <ColumnDefinition Width="*" />
+          </Grid.ColumnDefinitions>
+          <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+          </Grid.RowDefinitions>
+          <TextBlock Grid.ColumnSpan="3" Text="Varredura" Style="{StaticResource CySectionTitle}" />
+          <TextBlock Grid.Row="1" Text="Tamanho máximo por arquivo (MB)" Style="{StaticResource Label}" />
+          <TextBox Grid.Row="1" Grid.Column="1" Text="{Binding MaxFileSizeMb, UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource Number}" />
+          <TextBlock Grid.Row="1" Grid.Column="2" Text="Acima disso o arquivo aparece como não analisado. 1 a 2000." Style="{StaticResource Hint}" />
+          <TextBlock Grid.Row="2" Text="Arquivos analisados ao mesmo tempo" Style="{StaticResource Label}" />
+          <TextBox Grid.Row="2" Grid.Column="1" Text="{Binding Parallelism, UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource Number}" />
+          <TextBlock Grid.Row="2" Grid.Column="2" Text="1 a 8. Mais paralelismo usa mais CPU e disco." Style="{StaticResource Hint}" />
+          <TextBlock Grid.Row="3" Text="Tempo máximo por arquivo (s)" Style="{StaticResource Label}" />
+          <TextBox Grid.Row="3" Grid.Column="1" Text="{Binding PerFileTimeoutSeconds, UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource Number}" />
+          <TextBlock Grid.Row="3" Grid.Column="2" Text="10 a 3600. Ao estourar, o item aparece como não analisado." Style="{StaticResource Hint}" />
+        </Grid>
+      </Border>
+
+      <Border Style="{StaticResource CyCard}">
+        <Grid>
+          <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="280" />
+            <ColumnDefinition Width="Auto" />
+            <ColumnDefinition Width="*" />
+          </Grid.ColumnDefinitions>
+          <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+          </Grid.RowDefinitions>
+          <TextBlock Grid.ColumnSpan="3" Text="Arquivos compactados (limites do ClamAV)" Style="{StaticResource CySectionTitle}" />
+          <TextBlock Grid.Row="1" Text="Total extraído por item (MB)" Style="{StaticResource Label}" />
+          <TextBox Grid.Row="1" Grid.Column="1" Text="{Binding ArchiveMaxScanSizeMb, UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource Number}" />
+          <TextBlock Grid.Row="1" Grid.Column="2" Text="MaxScanSize" Style="{StaticResource Hint}" />
+          <TextBlock Grid.Row="2" Text="Tamanho de cada arquivo interno (MB)" Style="{StaticResource Label}" />
+          <TextBox Grid.Row="2" Grid.Column="1" Text="{Binding ArchiveMaxFileSizeMb, UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource Number}" />
+          <TextBlock Grid.Row="2" Grid.Column="2" Text="MaxFileSize" Style="{StaticResource Hint}" />
+          <TextBlock Grid.Row="3" Text="Profundidade de compactados" Style="{StaticResource Label}" />
+          <TextBox Grid.Row="3" Grid.Column="1" Text="{Binding ArchiveMaxRecursion, UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource Number}" />
+          <TextBlock Grid.Row="3" Grid.Column="2" Text="MaxRecursion" Style="{StaticResource Hint}" />
+          <TextBlock Grid.Row="4" Text="Arquivos internos por item" Style="{StaticResource Label}" />
+          <TextBox Grid.Row="4" Grid.Column="1" Text="{Binding ArchiveMaxFiles, UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource Number}" />
+          <TextBlock Grid.Row="4" Grid.Column="2" Text="MaxFiles" Style="{StaticResource Hint}" />
+          <TextBlock Grid.Row="5" Text="Tempo do ClamAV por item (s)" Style="{StaticResource Label}" />
+          <TextBox Grid.Row="5" Grid.Column="1" Text="{Binding ArchiveMaxScanTimeSeconds, UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource Number}" />
+          <TextBlock Grid.Row="5" Grid.Column="2" Text="MaxScanTime. Ao exceder qualquer limite, o item aparece como não analisado por completo." Style="{StaticResource Hint}" />
+        </Grid>
+      </Border>
+
+      <Border Style="{StaticResource CyCard}">
+        <StackPanel>
+          <TextBlock Text="Motor" Style="{StaticResource CySectionTitle}" />
+          <CheckBox Content="Detectar aplicativos potencialmente indesejados (PUA) — podem ser legítimos; aparecem como suspeitos" IsChecked="{Binding DetectPua}" Margin="0,4" />
+          <CheckBox Content="Manter o motor carregado entre varreduras (mais rápido; usa cerca de 1 GB de RAM). Com o tempo real ativo ele fica sempre carregado." IsChecked="{Binding KeepEngineLoaded}" Margin="0,4" />
+          <CheckBox Content="Procurar versões novas do Cocytus no GitHub ao abrir e a cada 24 horas (só consulta a página pública de releases)" IsChecked="{Binding CheckAppUpdates}" Margin="0,4" />
+          <StackPanel Orientation="Horizontal" Margin="0,8,0,0">
+            <Button Content="Encerrar motor agora" Command="{Binding ReleaseEngineCommand}" Style="{StaticResource CyButton}" />
+          </StackPanel>
+        </StackPanel>
+      </Border>
+
+      <Border Style="{StaticResource CyCard}">
+        <StackPanel>
+          <TextBlock Text="Integração com o Windows" Style="{StaticResource CySectionTitle}" />
+          <TextBlock Style="{StaticResource CyMutedText}" Text="Gravado só no registro do seu usuário (HKCU), sem administrador. No Windows 11 a opção do menu aparece em &quot;Mostrar mais opções&quot; (menu clássico)." />
+          <Grid Margin="0,10,0,0">
+            <Grid.ColumnDefinitions>
+              <ColumnDefinition Width="280" />
+              <ColumnDefinition Width="Auto" />
+              <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+              <RowDefinition Height="Auto" />
+              <RowDefinition Height="Auto" />
+            </Grid.RowDefinitions>
+            <TextBlock Grid.Row="0" Text="&quot;Verificar com o Cocytus&quot; no botão direito" Style="{StaticResource Label}" />
+            <StackPanel Grid.Row="0" Grid.Column="1" Orientation="Horizontal" Margin="0,4">
+              <Button Content="Adicionar" Command="{Binding InstallContextMenuCommand}" Style="{StaticResource CyButton}" />
+              <Button Content="Remover" Command="{Binding RemoveContextMenuCommand}" Style="{StaticResource CyButton}" />
+            </StackPanel>
+            <TextBlock Grid.Row="0" Grid.Column="2" Text="{Binding ContextMenuStatus}" Style="{StaticResource Hint}" />
+            <TextBlock Grid.Row="1" Text="Iniciar com o Windows (na bandeja)" Style="{StaticResource Label}" />
+            <StackPanel Grid.Row="1" Grid.Column="1" Orientation="Horizontal" Margin="0,4">
+              <Button Content="Ativar" Command="{Binding EnableStartupCommand}" Style="{StaticResource CyButton}" />
+              <Button Content="Desativar" Command="{Binding DisableStartupCommand}" Style="{StaticResource CyButton}" />
+            </StackPanel>
+            <TextBlock Grid.Row="1" Grid.Column="2" Text="{Binding StartupStatus}" Style="{StaticResource Hint}" />
+          </Grid>
+        </StackPanel>
+      </Border>
+
+      <Border Style="{StaticResource CyCard}">
+        <StackPanel>
+          <TextBlock Text="Dados locais" Style="{StaticResource CySectionTitle}" />
+          <TextBlock Text="{Binding DataRoot, StringFormat='Bases, quarentena, histórico, configurações e logs ficam em: {0}'}" Style="{StaticResource CyMutedText}" />
+          <StackPanel Orientation="Horizontal" Margin="0,8,0,0">
+            <Button Content="Abrir pasta de dados" Command="{Binding OpenDataFolderCommand}" Style="{StaticResource CyButton}" />
+            <Button Content="Abrir logs" Command="{Binding OpenLogsFolderCommand}" Style="{StaticResource CyButton}" />
+          </StackPanel>
+        </StackPanel>
+      </Border>
+
+      <StackPanel Orientation="Horizontal" Margin="0,4,0,8">
+        <Button Content="Salvar" Command="{Binding SaveCommand}" Style="{StaticResource CyPrimaryButton}" />
+        <Button Content="Restaurar padrões" Command="{Binding DefaultsCommand}" Style="{StaticResource CyButton}" />
+        <TextBlock Text="{Binding Status}" VerticalAlignment="Center" Foreground="{StaticResource CyAccent}" Margin="8,0,0,0" TextWrapping="Wrap" />
+      </StackPanel>
+    </StackPanel>
+  </ScrollViewer>
+</UserControl>

@@ -1,0 +1,17 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <RootNamespace>Cocytus.Update</RootNamespace>
+    <AssemblyName>Cocytus.Update</AssemblyName>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <InternalsVisibleTo Include="Cocytus.Tests" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Cocytus.Core\Cocytus.Core.csproj" />
+    <ProjectReference Include="..\Cocytus.Engines\Cocytus.Engines.csproj" />
+  </ItemGroup>
+
+</Project>

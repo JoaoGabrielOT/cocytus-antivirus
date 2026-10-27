@@ -1,0 +1,65 @@
+<UserControl x:Class="Cocytus.App.Views.HistoryView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+  <DockPanel>
+    <DockPanel DockPanel.Dock="Top">
+      <StackPanel DockPanel.Dock="Right" Orientation="Horizontal" VerticalAlignment="Top">
+        <Button Content="Atualizar" Command="{Binding RefreshCommand}" Style="{StaticResource CyButton}" />
+        <Button Content="Apagar histórico…" Command="{Binding ClearCommand}" Style="{StaticResource CyDangerButton}" Margin="0" />
+      </StackPanel>
+      <StackPanel>
+        <TextBlock Text="Histórico" Style="{StaticResource CyPageTitle}" />
+        <TextBlock Style="{StaticResource CyPageSubtitle}" Text="Varreduras, itens que precisaram de atenção e operações de quarentena e atualização. Tudo fica só neste computador." />
+      </StackPanel>
+    </DockPanel>
+    <TabControl Background="Transparent" BorderThickness="0">
+      <TabItem Header="Varreduras">
+        <Grid Margin="0,10,0,0">
+          <Grid.RowDefinitions>
+            <RowDefinition Height="*" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+          </Grid.RowDefinitions>
+          <DataGrid Grid.Row="0" ItemsSource="{Binding Scans}" SelectedItem="{Binding Selected}" Style="{StaticResource CyGrid}" SelectionMode="Single"
+                    AutomationProperties.Name="Varreduras">
+            <DataGrid.Columns>
+              <DataGridTextColumn Header="Início" Binding="{Binding DateText}" Width="130" />
+              <DataGridTextColumn Header="Situação" Binding="{Binding StatusText}" Width="100" />
+              <DataGridTextColumn Header="Alvos" Binding="{Binding TargetsText}" Width="2*" />
+              <DataGridTextColumn Header="Analisados" Binding="{Binding Analyzed}" Width="90" />
+              <DataGridTextColumn Header="Ameaças" Binding="{Binding Threats}" Width="80" />
+              <DataGridTextColumn Header="Suspeitos" Binding="{Binding Suspicious}" Width="80" />
+              <DataGridTextColumn Header="Não analisados" Binding="{Binding NotScanned}" Width="110" />
+              <DataGridTextColumn Header="Erros" Binding="{Binding ReadErrors}" Width="60" />
+              <DataGridTextColumn Header="Duração" Binding="{Binding DurationText}" Width="80" />
+            </DataGrid.Columns>
+          </DataGrid>
+          <Border Grid.Row="1" Style="{StaticResource CyCard}" Margin="0,10">
+            <StackPanel>
+              <TextBlock Text="{Binding Selected.DetailText}" TextWrapping="Wrap" />
+              <TextBlock Text="{Binding Selected.EngineText}" Style="{StaticResource CyMutedText}" Margin="0,4,0,0" />
+            </StackPanel>
+          </Border>
+          <DataGrid Grid.Row="2" ItemsSource="{Binding SelectedItems}" Style="{StaticResource CyGrid}" AutomationProperties.Name="Itens da varredura selecionada">
+            <DataGrid.Columns>
+              <DataGridTextColumn Header="Categoria" Binding="{Binding OutcomeText}" Width="150" />
+              <DataGridTextColumn Header="Arquivo" Binding="{Binding Path}" Width="2*" />
+              <DataGridTextColumn Header="Detecção / motivo" Binding="{Binding Name}" Width="1.3*" />
+              <DataGridTextColumn Header="Detalhe" Binding="{Binding Detail}" Width="2*" />
+            </DataGrid.Columns>
+          </DataGrid>
+        </Grid>
+      </TabItem>
+      <TabItem Header="Eventos">
+        <DataGrid Margin="0,10,0,0" ItemsSource="{Binding Events}" Style="{StaticResource CyGrid}" AutomationProperties.Name="Eventos">
+          <DataGrid.Columns>
+            <DataGridTextColumn Header="Data" Binding="{Binding DateText}" Width="150" />
+            <DataGridTextColumn Header="Tipo" Binding="{Binding Kind}" Width="120" />
+            <DataGridTextColumn Header="Mensagem" Binding="{Binding Message}" Width="2*" />
+            <DataGridTextColumn Header="Caminho" Binding="{Binding Path}" Width="2*" />
+          </DataGrid.Columns>
+        </DataGrid>
+      </TabItem>
+    </TabControl>
+  </DockPanel>
+</UserControl>

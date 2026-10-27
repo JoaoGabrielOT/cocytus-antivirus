@@ -1,0 +1,90 @@
+<Window x:Class="Cocytus.App.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:vm="clr-namespace:Cocytus.App.ViewModels"
+        xmlns:views="clr-namespace:Cocytus.App.Views"
+        Title="Cocytus"
+        Icon="Assets/cocytus.ico"
+        Width="1240" Height="800" MinWidth="980" MinHeight="640"
+        WindowStartupLocation="CenterScreen"
+        Background="{StaticResource CyBackground}"
+        Foreground="{StaticResource CyText}"
+        FontFamily="Segoe UI Variable Text, Segoe UI"
+        FontSize="13.5">
+  <Window.Resources>
+    <DataTemplate DataType="{x:Type vm:ScanViewModel}">
+      <views:ScanView />
+    </DataTemplate>
+    <DataTemplate DataType="{x:Type vm:RealTimeViewModel}">
+      <views:RealTimeView />
+    </DataTemplate>
+    <DataTemplate DataType="{x:Type vm:QuarantineViewModel}">
+      <views:QuarantineView />
+    </DataTemplate>
+    <DataTemplate DataType="{x:Type vm:HistoryViewModel}">
+      <views:HistoryView />
+    </DataTemplate>
+    <DataTemplate DataType="{x:Type vm:OptimizationViewModel}">
+      <views:OptimizationView />
+    </DataTemplate>
+    <DataTemplate DataType="{x:Type vm:UninstallViewModel}">
+      <views:UninstallView />
+    </DataTemplate>
+    <DataTemplate DataType="{x:Type vm:UpdateViewModel}">
+      <views:UpdateView />
+    </DataTemplate>
+    <DataTemplate DataType="{x:Type vm:SettingsViewModel}">
+      <views:SettingsView />
+    </DataTemplate>
+    <DataTemplate DataType="{x:Type vm:AboutViewModel}">
+      <views:AboutView />
+    </DataTemplate>
+  </Window.Resources>
+
+  <Grid>
+    <Grid.ColumnDefinitions>
+      <ColumnDefinition Width="236" />
+      <ColumnDefinition Width="*" />
+    </Grid.ColumnDefinitions>
+
+    <!-- Navegação -->
+    <Border Grid.Column="0" Background="{StaticResource CySidebar}" BorderBrush="{StaticResource CyBorder}" BorderThickness="0,0,1,0">
+      <DockPanel LastChildFill="True">
+        <StackPanel DockPanel.Dock="Top" Orientation="Horizontal" Margin="20,22,16,22">
+          <Image Source="Assets/cocytus.png" Width="36" Height="36" RenderOptions.BitmapScalingMode="HighQuality" />
+          <StackPanel Margin="12,0,0,0" VerticalAlignment="Center">
+            <TextBlock Text="Cocytus" FontSize="20" FontWeight="SemiBold" Foreground="{StaticResource CyText}" />
+            <TextBlock Text="antivírus livre e gratuito" FontSize="11.5" Foreground="{StaticResource CyMuted}" />
+          </StackPanel>
+        </StackPanel>
+
+        <Border DockPanel.Dock="Bottom" Margin="16" Padding="12" CornerRadius="8" Background="{StaticResource CySurface}">
+          <StackPanel>
+            <TextBlock Text="{Binding EngineStatus}" TextWrapping="Wrap" FontSize="11.5" Foreground="{StaticResource CyMuted}" />
+            <TextBlock Text="{Binding ProtectionNotice}" TextWrapping="Wrap" FontSize="11.5" Margin="0,6,0,0" Foreground="{StaticResource CySuspicious}" />
+            <Button Content="Sair do Cocytus" Command="{Binding ExitCommand}" Style="{StaticResource CyButton}" Margin="0,10,0,0" HorizontalAlignment="Left"
+                    ToolTip="Encerra o Cocytus e a verificação em tempo real (fechar a janela só a esconde na bandeja)" />
+          </StackPanel>
+        </Border>
+
+        <ListBox ItemsSource="{Binding Pages}" SelectedItem="{Binding SelectedPage}"
+                 Background="Transparent" BorderThickness="0" Padding="0"
+                 ItemContainerStyle="{StaticResource CyNavItem}"
+                 ScrollViewer.HorizontalScrollBarVisibility="Disabled"
+                 AutomationProperties.Name="Navegação">
+          <ListBox.ItemTemplate>
+            <DataTemplate>
+              <StackPanel Orientation="Horizontal">
+                <TextBlock Text="{Binding Glyph}" FontFamily="{StaticResource CyIconFont}" FontSize="16" VerticalAlignment="Center" Width="26" />
+                <TextBlock Text="{Binding Title}" FontSize="14" VerticalAlignment="Center" />
+              </StackPanel>
+            </DataTemplate>
+          </ListBox.ItemTemplate>
+        </ListBox>
+      </DockPanel>
+    </Border>
+
+    <!-- Conteúdo -->
+    <ContentControl Grid.Column="1" Content="{Binding SelectedPage}" Margin="28,22,28,18" Focusable="False" />
+  </Grid>
+</Window>

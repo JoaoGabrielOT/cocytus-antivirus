@@ -1,0 +1,194 @@
+<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+
+  <!-- Paleta glacial do Cocytus (tema escuro) -->
+  <Color x:Key="CyBackgroundColor">#0B1220</Color>
+  <Color x:Key="CySidebarColor">#0E1729</Color>
+  <Color x:Key="CySurfaceColor">#121D33</Color>
+  <Color x:Key="CySurfaceAltColor">#17243F</Color>
+  <Color x:Key="CyBorderColor">#24355A</Color>
+  <Color x:Key="CyTextColor">#E6EEF8</Color>
+  <Color x:Key="CyMutedColor">#9BB0CC</Color>
+  <Color x:Key="CyAccentColor">#7DD3FC</Color>
+  <Color x:Key="CyAccentStrongColor">#38BDF8</Color>
+  <Color x:Key="CyThreatColor">#F87171</Color>
+  <Color x:Key="CySuspiciousColor">#FBBF24</Color>
+  <Color x:Key="CyNotScannedColor">#A5B4CB</Color>
+  <Color x:Key="CyReadErrorColor">#FB923C</Color>
+  <Color x:Key="CyOkColor">#4ADE80</Color>
+
+  <SolidColorBrush x:Key="CyBackground" Color="{StaticResource CyBackgroundColor}" />
+  <SolidColorBrush x:Key="CySidebar" Color="{StaticResource CySidebarColor}" />
+  <SolidColorBrush x:Key="CySurface" Color="{StaticResource CySurfaceColor}" />
+  <SolidColorBrush x:Key="CySurfaceAlt" Color="{StaticResource CySurfaceAltColor}" />
+  <SolidColorBrush x:Key="CyBorder" Color="{StaticResource CyBorderColor}" />
+  <SolidColorBrush x:Key="CyText" Color="{StaticResource CyTextColor}" />
+  <SolidColorBrush x:Key="CyMuted" Color="{StaticResource CyMutedColor}" />
+  <SolidColorBrush x:Key="CyAccent" Color="{StaticResource CyAccentColor}" />
+  <SolidColorBrush x:Key="CyAccentStrong" Color="{StaticResource CyAccentStrongColor}" />
+  <SolidColorBrush x:Key="CyThreat" Color="{StaticResource CyThreatColor}" />
+  <SolidColorBrush x:Key="CySuspicious" Color="{StaticResource CySuspiciousColor}" />
+  <SolidColorBrush x:Key="CyNotScanned" Color="{StaticResource CyNotScannedColor}" />
+  <SolidColorBrush x:Key="CyReadError" Color="{StaticResource CyReadErrorColor}" />
+  <SolidColorBrush x:Key="CyOk" Color="{StaticResource CyOkColor}" />
+
+  <FontFamily x:Key="CyIconFont">Segoe Fluent Icons, Segoe MDL2 Assets</FontFamily>
+
+  <Style x:Key="CyPageTitle" TargetType="TextBlock">
+    <Setter Property="FontSize" Value="26" />
+    <Setter Property="FontWeight" Value="SemiBold" />
+    <Setter Property="Foreground" Value="{StaticResource CyText}" />
+    <Setter Property="Margin" Value="0,0,0,4" />
+  </Style>
+
+  <Style x:Key="CyPageSubtitle" TargetType="TextBlock">
+    <Setter Property="FontSize" Value="13" />
+    <Setter Property="Foreground" Value="{StaticResource CyMuted}" />
+    <Setter Property="TextWrapping" Value="Wrap" />
+    <Setter Property="Margin" Value="0,0,0,16" />
+  </Style>
+
+  <Style x:Key="CySectionTitle" TargetType="TextBlock">
+    <Setter Property="FontSize" Value="15" />
+    <Setter Property="FontWeight" Value="SemiBold" />
+    <Setter Property="Foreground" Value="{StaticResource CyText}" />
+    <Setter Property="Margin" Value="0,0,0,8" />
+  </Style>
+
+  <Style x:Key="CyMutedText" TargetType="TextBlock">
+    <Setter Property="Foreground" Value="{StaticResource CyMuted}" />
+    <Setter Property="TextWrapping" Value="Wrap" />
+    <Setter Property="FontSize" Value="12.5" />
+  </Style>
+
+  <Style x:Key="CyCard" TargetType="Border">
+    <Setter Property="Background" Value="{StaticResource CySurface}" />
+    <Setter Property="BorderBrush" Value="{StaticResource CyBorder}" />
+    <Setter Property="BorderThickness" Value="1" />
+    <Setter Property="CornerRadius" Value="10" />
+    <Setter Property="Padding" Value="16" />
+    <Setter Property="Margin" Value="0,0,0,12" />
+  </Style>
+
+  <!-- Contador (número grande + rótulo) -->
+  <Style x:Key="CyCounterNumber" TargetType="TextBlock">
+    <Setter Property="FontSize" Value="24" />
+    <Setter Property="FontWeight" Value="SemiBold" />
+    <Setter Property="Foreground" Value="{StaticResource CyText}" />
+  </Style>
+
+  <Style x:Key="CyCounterLabel" TargetType="TextBlock">
+    <Setter Property="FontSize" Value="12" />
+    <Setter Property="Foreground" Value="{StaticResource CyMuted}" />
+    <Setter Property="TextWrapping" Value="Wrap" />
+  </Style>
+
+  <Style x:Key="CyPrimaryButton" TargetType="Button" BasedOn="{StaticResource {x:Type Button}}">
+    <Setter Property="Background" Value="{StaticResource CyAccentStrong}" />
+    <Setter Property="Foreground" Value="#06101F" />
+    <Setter Property="FontWeight" Value="SemiBold" />
+    <Setter Property="Padding" Value="18,8" />
+    <Setter Property="Margin" Value="0,0,8,0" />
+  </Style>
+
+  <Style x:Key="CyButton" TargetType="Button" BasedOn="{StaticResource {x:Type Button}}">
+    <Setter Property="Padding" Value="14,7" />
+    <Setter Property="Margin" Value="0,0,8,0" />
+  </Style>
+
+  <Style x:Key="CyDangerButton" TargetType="Button" BasedOn="{StaticResource {x:Type Button}}">
+    <Setter Property="Foreground" Value="{StaticResource CyThreat}" />
+    <Setter Property="Padding" Value="14,7" />
+    <Setter Property="Margin" Value="0,0,8,0" />
+  </Style>
+
+  <!-- Cartão de escolha (tipo de verificação) -->
+  <Style x:Key="CyModeCard" TargetType="RadioButton">
+    <Setter Property="Foreground" Value="{StaticResource CyText}" />
+    <Setter Property="Cursor" Value="Hand" />
+    <Setter Property="Margin" Value="0,0,10,0" />
+    <Setter Property="FocusVisualStyle" Value="{x:Null}" />
+    <Setter Property="Template">
+      <Setter.Value>
+        <ControlTemplate TargetType="RadioButton">
+          <Border x:Name="Card" Background="{StaticResource CySurfaceAlt}" BorderBrush="{StaticResource CyBorder}"
+                  BorderThickness="2" CornerRadius="8" Padding="14,10">
+            <ContentPresenter />
+          </Border>
+          <ControlTemplate.Triggers>
+            <Trigger Property="IsMouseOver" Value="True">
+              <Setter TargetName="Card" Property="BorderBrush" Value="#3B5A8C" />
+            </Trigger>
+            <Trigger Property="IsKeyboardFocused" Value="True">
+              <Setter TargetName="Card" Property="BorderBrush" Value="{StaticResource CyAccent}" />
+            </Trigger>
+            <Trigger Property="IsChecked" Value="True">
+              <Setter TargetName="Card" Property="BorderBrush" Value="{StaticResource CyAccentStrong}" />
+              <Setter TargetName="Card" Property="Background" Value="#1A2D4D" />
+            </Trigger>
+            <Trigger Property="IsEnabled" Value="False">
+              <Setter TargetName="Card" Property="Opacity" Value="0.6" />
+            </Trigger>
+          </ControlTemplate.Triggers>
+        </ControlTemplate>
+      </Setter.Value>
+    </Setter>
+  </Style>
+
+  <!-- Navegação lateral -->
+  <Style x:Key="CyNavItem" TargetType="ListBoxItem">
+    <Setter Property="Foreground" Value="{StaticResource CyMuted}" />
+    <Setter Property="Cursor" Value="Hand" />
+    <Setter Property="Template">
+      <Setter.Value>
+        <ControlTemplate TargetType="ListBoxItem">
+          <Border x:Name="Bg" Background="Transparent" CornerRadius="8" Margin="8,2" Padding="12,10">
+            <Grid>
+              <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="4" />
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="*" />
+              </Grid.ColumnDefinitions>
+              <Border x:Name="Indicator" Grid.Column="0" Width="3" Height="18" CornerRadius="2" Background="Transparent" Margin="-12,0,0,0" />
+              <ContentPresenter Grid.Column="1" Grid.ColumnSpan="2" />
+            </Grid>
+          </Border>
+          <ControlTemplate.Triggers>
+            <Trigger Property="IsMouseOver" Value="True">
+              <Setter TargetName="Bg" Property="Background" Value="{StaticResource CySurface}" />
+              <Setter Property="Foreground" Value="{StaticResource CyText}" />
+            </Trigger>
+            <Trigger Property="IsSelected" Value="True">
+              <Setter TargetName="Bg" Property="Background" Value="{StaticResource CySurfaceAlt}" />
+              <Setter TargetName="Indicator" Property="Background" Value="{StaticResource CyAccent}" />
+              <Setter Property="Foreground" Value="{StaticResource CyText}" />
+            </Trigger>
+          </ControlTemplate.Triggers>
+        </ControlTemplate>
+      </Setter.Value>
+    </Setter>
+  </Style>
+
+  <Style x:Key="CyGrid" TargetType="DataGrid" BasedOn="{StaticResource {x:Type DataGrid}}">
+    <Setter Property="AutoGenerateColumns" Value="False" />
+    <Setter Property="IsReadOnly" Value="True" />
+    <Setter Property="CanUserAddRows" Value="False" />
+    <Setter Property="CanUserDeleteRows" Value="False" />
+    <Setter Property="HeadersVisibility" Value="Column" />
+    <Setter Property="GridLinesVisibility" Value="None" />
+    <Setter Property="SelectionUnit" Value="FullRow" />
+    <Setter Property="Background" Value="{StaticResource CySurface}" />
+    <Setter Property="RowBackground" Value="{StaticResource CySurface}" />
+    <Setter Property="AlternatingRowBackground" Value="{StaticResource CySurfaceAlt}" />
+    <Setter Property="BorderBrush" Value="{StaticResource CyBorder}" />
+    <Setter Property="BorderThickness" Value="1" />
+    <Setter Property="EnableRowVirtualization" Value="True" />
+    <Setter Property="VirtualizingPanel.IsVirtualizing" Value="True" />
+    <Style.Resources>
+      <!-- Seleção com a paleta do Cocytus (a cor de destaque do Windows pode tirar o contraste das categorias).
+           Chaves usadas pelo tema Fluent do WPF para a linha selecionada. -->
+      <SolidColorBrush x:Key="DataGridRowSelectedBackgroundThemeBrush" Color="#1F3B63" />
+      <SolidColorBrush x:Key="DataGridRowSelectedForegroundThemeBrush" Color="#E6EEF8" />
+    </Style.Resources>
+  </Style>
+</ResourceDictionary>

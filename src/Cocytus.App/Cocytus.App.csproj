@@ -1,0 +1,39 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <UseWPF>true</UseWPF>
+    <!-- Windows Forms só para o ícone da bandeja (NotifyIcon) -->
+    <UseWindowsForms>true</UseWindowsForms>
+    <!-- O DPI por monitor vem do app.manifest (o WPF lê de lá); o aviso do Windows Forms não se aplica. -->
+    <NoWarn>$(NoWarn);WFAC010;WFO0003</NoWarn>
+    <!-- Exigido pelo gerador de LibraryImport (shell32/user32) -->
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <AssemblyName>Cocytus</AssemblyName>
+    <RootNamespace>Cocytus.App</RootNamespace>
+    <ApplicationIcon>Assets\cocytus.ico</ApplicationIcon>
+    <ApplicationManifest>app.manifest</ApplicationManifest>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <!-- Projetos WPF tiram System.IO dos usings implícitos (conflito com Shapes.Path). -->
+    <Using Include="System.IO" />
+    <!-- WPF e Windows Forms juntos: evita conflitos de nomes (Application, Button, MessageBox...) -->
+    <Using Remove="System.Windows.Forms" />
+    <Using Remove="System.Drawing" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Resource Include="Assets\cocytus.ico" />
+    <Resource Include="Assets\cocytus.png" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Cocytus.Core\Cocytus.Core.csproj" />
+    <ProjectReference Include="..\Cocytus.Engines\Cocytus.Engines.csproj" />
+    <ProjectReference Include="..\Cocytus.Data\Cocytus.Data.csproj" />
+    <ProjectReference Include="..\Cocytus.Update\Cocytus.Update.csproj" />
+    <ProjectReference Include="..\Cocytus.Maintenance\Cocytus.Maintenance.csproj" />
+  </ItemGroup>
+
+</Project>

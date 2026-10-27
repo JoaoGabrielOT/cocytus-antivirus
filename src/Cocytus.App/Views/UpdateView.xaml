@@ -1,0 +1,60 @@
+<UserControl x:Class="Cocytus.App.Views.UpdateView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+  <UserControl.Resources>
+    <BooleanToVisibilityConverter x:Key="BoolToVis" />
+  </UserControl.Resources>
+  <DockPanel>
+    <StackPanel DockPanel.Dock="Top">
+      <TextBlock Text="Atualização" Style="{StaticResource CyPageTitle}" />
+    </StackPanel>
+    <Border DockPanel.Dock="Top" Style="{StaticResource CyCard}">
+      <StackPanel>
+        <TextBlock Text="Programa Cocytus" Style="{StaticResource CySectionTitle}" />
+        <TextBlock Text="{Binding AppVersionText}" TextWrapping="Wrap" />
+        <TextBlock Style="{StaticResource CyMutedText}" Margin="0,4,0,0"
+                   Text="Versões novas são publicadas como releases no GitHub. A consulta automática (ao abrir e a cada 24 horas) pode ser desligada nas Configurações; ela só lê a página pública de releases." />
+        <StackPanel Orientation="Horizontal" Margin="0,10,0,0">
+          <Button Content="Procurar atualização do Cocytus" Command="{Binding CheckAppCommand}" Style="{StaticResource CyButton}" />
+          <Button Content="Ver releases no GitHub" Command="{Binding OpenRepositoryCommand}" Style="{StaticResource CyButton}" />
+        </StackPanel>
+        <TextBlock Text="{Binding AppStatus}" Foreground="{StaticResource CyAccent}" TextWrapping="Wrap" Margin="0,8,0,0" />
+      </StackPanel>
+    </Border>
+    <Border DockPanel.Dock="Top" Style="{StaticResource CyCard}">
+      <StackPanel>
+        <TextBlock Text="Bases do ClamAV" Style="{StaticResource CySectionTitle}" />
+        <TextBlock Style="{StaticResource CyMutedText}" Text="{Binding NetworkNotice}" Margin="0,0,0,8" />
+        <TextBlock Text="{Binding EngineText}" TextWrapping="Wrap" Margin="0,0,0,4" />
+        <TextBlock Text="{Binding DatabaseDir, StringFormat='Pasta das bases: {0}'}" Style="{StaticResource CyMutedText}" />
+        <StackPanel Orientation="Horizontal" Margin="0,12,0,0">
+          <Button Content="Atualizar bases" Command="{Binding UpdateCommand}" Style="{StaticResource CyPrimaryButton}" />
+          <Button Content="Cancelar" Command="{Binding CancelCommand}" Style="{StaticResource CyButton}" />
+        </StackPanel>
+        <ProgressBar IsIndeterminate="{Binding IsRunning}" Height="4" Margin="0,12,0,0" Visibility="{Binding IsRunning, Converter={StaticResource BoolToVis}}" />
+        <TextBlock Text="{Binding Status}" TextWrapping="Wrap" Margin="0,10,0,0" FontWeight="SemiBold" />
+      </StackPanel>
+    </Border>
+    <Border DockPanel.Dock="Top" Style="{StaticResource CyCard}">
+      <StackPanel>
+        <TextBlock Text="Bases instaladas" Style="{StaticResource CySectionTitle}" />
+        <DataGrid ItemsSource="{Binding Databases}" Style="{StaticResource CyGrid}" MaxHeight="160" AutomationProperties.Name="Bases instaladas">
+          <DataGrid.Columns>
+            <DataGridTextColumn Header="Arquivo" Binding="{Binding Name}" Width="*" />
+            <DataGridTextColumn Header="Versão" Binding="{Binding Version}" Width="100" />
+            <DataGridTextColumn Header="Assinaturas" Binding="{Binding Signatures}" Width="140" />
+            <DataGridTextColumn Header="Publicada em" Binding="{Binding DateText}" Width="160" />
+          </DataGrid.Columns>
+        </DataGrid>
+      </StackPanel>
+    </Border>
+    <Border Style="{StaticResource CyCard}" Margin="0">
+      <DockPanel>
+        <TextBlock DockPanel.Dock="Top" Text="Saída do freshclam" Style="{StaticResource CySectionTitle}" />
+        <TextBox Text="{Binding LogText, Mode=OneWay}" IsReadOnly="True" FontFamily="Cascadia Mono, Consolas" FontSize="12"
+                 VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto" TextWrapping="NoWrap"
+                 AutomationProperties.Name="Saída do freshclam" TextChanged="OnLogChanged" />
+      </DockPanel>
+    </Border>
+  </DockPanel>
+</UserControl>
