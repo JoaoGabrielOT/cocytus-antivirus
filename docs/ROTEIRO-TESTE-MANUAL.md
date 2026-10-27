@@ -63,3 +63,13 @@ Use só arquivos descartáveis. Para detecção, use o arquivo de teste do Cocyt
 | 43 | Remover selecionados… → Sim | Pasta "Na Lixeira"; chave "Removida (cópia: ….reg)"; a cópia fica em `%LocalAppData%\Cocytus\backups\registro` |
 | 44 | Desmarcar "Mostrar apps da Microsoft Store" | Só programas na lista |
 
+## Atualização do Cocytus
+
+| # | Passo | Resultado esperado |
+| --- | --- | --- |
+| 45 | Com uma release mais nova no GitHub, abrir o Cocytus | Em ~20 s abre "Cocytus X disponível" com novidades, tamanho e os botões Atualizar agora / Agora não / Pular esta versão |
+| 46 | Agora não → Atualização → Procurar atualização do Cocytus | A tela abre de novo |
+| 47 | Atualizar agora | Barra de download; "Pacote conferido (SHA-256)"; o Cocytus fecha; janela "Atualizando o Cocytus para a versão X"; o Cocytus abre de novo e avisa "Cocytus atualizado" na bandeja; Sobre mostra a versão nova |
+| 48 | Pular esta versão → fechar e abrir o Cocytus | Não pergunta mais por essa versão (o botão manual ainda mostra) |
+| 49 | Configurações → desmarcar "Procurar versões novas…" → Salvar → reabrir | Nenhuma consulta automática (log sem "Atualização do Cocytus") |
+

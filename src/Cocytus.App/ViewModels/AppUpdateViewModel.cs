@@ -1,5 +1,6 @@
 using System.Diagnostics;
 using System.Globalization;
+using System.Net.Http;
 using System.Windows.Input;
 using Cocytus.App.Services;
 using Cocytus.Core.Scanning;

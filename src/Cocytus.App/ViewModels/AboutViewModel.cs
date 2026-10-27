@@ -40,6 +40,7 @@ public sealed class AboutViewModel : PageViewModel
         new("Quarentena reversível", "Implementado", "Com confirmação, conferência por SHA-256 e restauração sem sobrescrever."),
         new("Histórico e configurações", "Implementado", "Locais (SQLite e JSON)."),
         new("Atualização das bases", "Implementado", "Manual, pelo freshclam oficial."),
+        new("Atualização do Cocytus", "Implementado", "Releases do GitHub: avisa ao abrir e a cada 24 h, pergunta antes e confere o SHA-256."),
         new("Bandeja e início com o Windows", "Implementado", "Início automático opcional (HKCU\\...\\Run), sem administrador."),
         new("Detecção de PUA", "Parcial", "Opcional, desligada por padrão; depende das assinaturas PUA do ClamAV."),
         new("Bloqueio antes da abertura/execução", "Planejado", "Exige minifiltro de kernel assinado pela Microsoft."),

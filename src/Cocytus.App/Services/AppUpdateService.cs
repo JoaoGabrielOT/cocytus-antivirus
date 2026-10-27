@@ -1,5 +1,6 @@
 using System.ComponentModel;
 using System.Diagnostics;
+using System.Net.Http;
 using System.Reflection;
 using System.Windows.Threading;
 using Cocytus.Data.History;

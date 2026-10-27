@@ -13,6 +13,8 @@ inicialização) e uma de **desinstalação de apps** com limpeza de restos.
 > nada — não é garantia de que o arquivo seja seguro. O Cocytus funciona ao lado do Microsoft Defender e não o substitui.
 > Não há equivalência de proteção com antivírus comerciais.
 
+Código e releases: <https://github.com/JoaoGabrielOT/cocytus-antivirus>.
+
 Licença: **GPL-2.0** (veja `LICENSE` e `THIRD-PARTY-NOTICES.md`). Nada depende de pagamento, conta ou chave.
 
 ## Situação dos recursos
@@ -28,6 +30,7 @@ Licença: **GPL-2.0** (veja `LICENSE` e `THIRD-PARTY-NOTICES.md`). Nada depende 
 | Quarentena reversível | Implementado | Confirmação, SHA-256, cópia cifrada, restauração sem sobrescrever, exclusão com dupla confirmação |
 | Histórico local e configurações | Implementado | SQLite e JSON na pasta de dados |
 | Atualização das bases | Implementado | Manual, pelo `freshclam` oficial (`database.clamav.net`) |
+| Atualização do próprio Cocytus | Implementado | Releases do GitHub; consulta ao abrir e a cada 24 h, pergunta antes, confere SHA-256 e instala sozinho |
 | "Verificar com o Cocytus" no botão direito | Implementado | Arquivos, pastas e unidades, com seleção múltipla; registro só em HKCU |
 | Verificação em tempo real | Parcial | Verifica arquivos novos/alterados nas pastas vigiadas logo após a gravação; avisa e pede confirmação antes da quarentena. Não bloqueia |
 | Bandeja e início com o Windows | Implementado | Ícone na bandeja; início automático opcional (HKCU `Run`), sem administrador |
@@ -43,7 +46,41 @@ Licença: **GPL-2.0** (veja `LICENSE` e `THIRD-PARTY-NOTICES.md`). Nada depende 
 
 - Windows 11 x64 (testado no Windows 11 build 26200).
 - Para compilar: nada instalado globalmente. O script baixa o SDK do .NET 10 para `.tools\dotnet`.
-- Rede: na preparação (SDK, ClamAV, pacotes NuGet, bases) e quando o usuário clica em **Atualizar bases**.
+- Rede: na preparação (SDK, ClamAV, pacotes NuGet, bases), quando o usuário clica em **Atualizar bases** e na
+  consulta de versão nova do Cocytus no GitHub (pode ser desligada).
+
+## Instalar uma release
+
+1. Baixe `Cocytus-X.Y.Z-win-x64.zip` em <https://github.com/JoaoGabrielOT/cocytus-antivirus/releases/latest>
+   (opcional: confira o SHA-256 com o `.sha256` ao lado).
+2. Extraia numa pasta sua (ex.: `%LOCALAPPDATA%\Programs\Cocytus`) e abra `Cocytus.exe`. Não precisa de .NET nem de
+   administrador. Os binários não têm assinatura digital, então o SmartScreen pode avisar na primeira vez.
+3. Na primeira vez, **Atualização → Atualizar bases**.
+
+## Atualização automática
+
+- O Cocytus consulta `https://api.github.com/repos/JoaoGabrielOT/cocytus-antivirus/releases/latest` ao abrir e a cada
+  24 horas (Configurações → "Procurar versões novas do Cocytus"; botão manual na tela Atualização). Só é feita a
+  requisição; nada do computador é enviado.
+- Havendo versão maior, abre a tela **"Cocytus X disponível"** com as novidades e três opções: **Atualizar agora**,
+  **Agora não** e **Pular esta versão**.
+- **Atualizar agora**: baixa o `.zip` da release para `%LocalAppData%\Cocytus\atualizacoes`, confere o SHA-256 publicado no
+  `.sha256` (diferente → cancela), extrai, inicia o Cocytus novo em modo instalação e fecha o atual. O instalador espera o
+  Cocytus antigo fechar, copia os arquivos para a mesma pasta (guardando cópia dos substituídos em
+  `atualizacoes\copia-anterior`; se a cópia falhar, tudo volta como estava) e abre o Cocytus atualizado, que avisa na
+  bandeja. Bases, quarentena, histórico, configurações, menu do botão direito e início automático continuam valendo.
+- Se a pasta do programa exigir administrador (ex.: Program Files), o Windows pede a confirmação só para a cópia.
+- Log da instalação: `%LocalAppData%\Cocytus\logs\atualizacao.log`.
+
+## Publicar uma versão nova
+
+1. Atualize `<Version>` em `Directory.Build.props` (ex.: `0.3.0`) e faça commit.
+2. Crie e envie a tag: `git tag v0.3.0` e `git push origin v0.3.0`.
+3. O workflow `.github/workflows/release.yml` (Windows) baixa o SDK e o ClamAV oficial, compila, roda os testes, gera
+   `Cocytus-0.3.0-win-x64.zip` + `.sha256` (`scripts\cocytus.ps1 -Task release -Version 0.3.0`) e cria a release
+   com notas geradas dos commits. Os Cocytus instalados passam a oferecer a atualização.
+
+Cada push na `main` roda o workflow `CI` (build, formatação e testes).
 
 ## Instalação do ambiente, build e execução
 
@@ -67,7 +104,8 @@ $env:COCYTUS_DATA = "$PWD\.dev\data"; .\dist\Cocytus\Cocytus.exe
 .\dist\Cocytus\Cocytus.exe
 ```
 
-Tarefas individuais: `-Task sdk`, `engines`, `db`, `build`, `format`, `test`, `publish`, `all`.
+Tarefas individuais: `-Task sdk`, `engines`, `db`, `build`, `format`, `test`, `publish`, `package`, `all`, `release`
+(`-Version X.Y.Z` grava a versão nos assemblies; `package` gera o zip e o `.sha256` em `dist\release`).
 Logs de cada execução ficam em `.dev\logs\` e o resumo em `.dev\logs\ultimo-status.txt`.
 
 Linha de comando do `Cocytus.exe`: `--verificar <caminhos…>` (verifica ao abrir; usado pelo menu),
@@ -240,6 +278,9 @@ docs/                 arquitetura, relação com o material de referência, rote
 - Desinstalação: depende do desinstalador de cada programa; desinstaladores que só terminam depois de reiniciar o
   Windows deixam o programa "ainda instalado" e os restos não são procurados. A busca de restos usa só nomes exatos e
   pode não encontrar tudo o que um programa deixou.
+- Os executáveis das releases não têm assinatura Authenticode (certificado de assinatura é pago); a integridade da
+  atualização automática é conferida pelo SHA-256 publicado na mesma release, o que protege contra download corrompido,
+  mas não contra quem controlar a conta do GitHub do projeto.
 - A API de apps da Store exige o Windows 10 2004 ou mais novo; o pacote inclui as projeções do Windows SDK
   (`Microsoft.Windows.SDK.NET.dll`, cerca de 25 MB).
 - Detecção limitada às assinaturas e heurísticas do ClamAV; a taxa de detecção do ClamAV para ameaças novas de Windows

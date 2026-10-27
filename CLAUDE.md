@@ -20,7 +20,8 @@ O script usa só o SDK em `.tools\dotnet` e caches em `.cache\` (nada global).
 - `src/Cocytus.Core` — modelos, contrato `IScanEngine`, orquestrador de varredura, `RealTimeMonitor`, `CommandLineOptions` (sem UI).
 - `src/Cocytus.Engines` — ClamAV: supervisão do `clamd`, protocolo INSTREAM, leitura das bases.
 - `src/Cocytus.Data` — quarentena, histórico (SQLite), configurações (JSON).
-- `src/Cocytus.Update` — atualização das bases pelo `freshclam`.
+- `src/Cocytus.Update` — atualização das bases pelo `freshclam`; releases do GitHub (`GitHubReleaseClient`) e
+  instalação da versão nova (`UpdateInstaller`, usado pelo `Cocytus.exe --aplicar-atualizacao`).
 - `src/Cocytus.Maintenance` — locais das verificações rápida/completa, uso do sistema, limpeza, Lixeira, inicialização
   (StartupApproved), apps instalados (registro Uninstall + PackageManager da Store), busca e remoção de restos.
 - `src/Cocytus.App` — interface WPF (MVVM sem framework externo), bandeja (NotifyIcon), instância única (mutex + pipe), `WindowsIntegration` (HKCU).
@@ -44,5 +45,8 @@ O script usa só o SDK em `.tools\dotnet` e caches em `.cache\` (nada global).
 - Testes: só arquivos descartáveis e a assinatura de teste própria; EICAR só em memória. Nada de malware real.
   Chaves de registro de teste só em `HKCU\Software\Cocytus.Tests` (apagadas no fim). Não rodar limpeza, esvaziar
   Lixeira, desinstalar nem verificações rápida/completa no computador do usuário durante o desenvolvimento.
-- Rede: apenas download do SDK/ClamAV/NuGet (scripts) e das bases do ClamAV (freshclam). Nenhuma telemetria.
+- Rede: download do SDK/ClamAV/NuGet (scripts), das bases do ClamAV (freshclam) e consulta/download das releases do
+  próprio Cocytus no GitHub (`JoaoGabrielOT/cocytus-antivirus`). Nenhuma telemetria.
+- Releases: tag `vX.Y.Z` → workflow `release.yml` (`scripts\cocytus.ps1 -Task release -Version X.Y.Z`). O pacote precisa
+  se chamar `Cocytus-X.Y.Z-win-x64.zip` e ter o `.sha256` ao lado; é isso que o atualizador procura.
 - Não apagar arquivos do usuário nem fazer commit/push sem autorização.

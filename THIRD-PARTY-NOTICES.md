@@ -17,8 +17,9 @@ Todos gratuitos. Nenhum exige pagamento, chave ou cadastro para o uso feito pelo
 
 - `scripts\cocytus.ps1` (só no desenvolvimento): baixa o `dotnet-install.ps1` (assinatura Microsoft conferida), o SDK do .NET,
   o ClamAV do GitHub (SHA-256 conferido com o digest publicado) e os pacotes NuGet.
-- O aplicativo: acessa a rede apenas quando o usuário clica em **Atualizar bases** (`database.clamav.net`). Nenhum arquivo,
-  hash, caminho ou dado de uso é enviado.
+- O aplicativo: acessa a rede quando o usuário clica em **Atualizar bases** (`database.clamav.net`) e para procurar e
+  baixar versões novas do próprio Cocytus nas releases públicas do GitHub (`api.github.com`, `github.com`; ao abrir e a
+  cada 24 horas, se ligado nas Configurações). Nenhum arquivo, hash, caminho ou dado de uso é enviado.
 
 ## Observação sobre os binários do ClamAV
 

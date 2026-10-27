@@ -51,6 +51,19 @@
 - `LeftoverFinder` só sugere nomes exatos, dentro das pastas de software conhecidas, e recusa pastas protegidas, pastas
   de editores e pastas que contenham outro programa ainda instalado.
 
+## Atualização do próprio Cocytus
+
+- `GitHubReleaseClient` (Update) lê `releases/latest` do repositório público, ignora rascunhos e pré-releases e só aceita a
+  release que tem `Cocytus-X.Y.Z-win-x64.zip` e `Cocytus-X.Y.Z-win-x64.zip.sha256`. Compara com a versão do assembly.
+- `AppUpdateService` (App) agenda a consulta (20 s depois de abrir e de hora em hora, consultando de fato a cada 24 h),
+  respeita a versão pulada e a opção das Configurações, e abre a `AppUpdateWindow`.
+- Instalação em dois processos: o Cocytus atual baixa, confere o SHA-256 e extrai; inicia o `Cocytus.exe` da versão nova com
+  `--aplicar-atualizacao <pasta do programa> --pid <pid>` (com `runas` se a pasta não aceitar escrita) e fecha.
+  O processo novo (`UpdateApplier`) espera o antigo terminar, chama `UpdateInstaller.Apply` (cópia com backup e restauração
+  em caso de erro) e abre o Cocytus da pasta do programa com `--atualizado` (pelo Explorador, se estiver elevado, para não
+  herdar o administrador).
+- Releases: tag `vX.Y.Z` → `.github/workflows/release.yml` em `windows-latest` → `cocytus.ps1 -Task release`.
+
 ## Tempo real
 
 - `RealTimeMonitor` (Core) não conhece WPF: recebe as pastas, as exclusões e uma função que entrega o motor.
